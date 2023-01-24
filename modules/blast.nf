@@ -1,3 +1,24 @@
+process seq_qc {
+
+    tag { sample_id }
+
+    executor 'local'
+
+    publishDir "${params.outdir}/${sample_id}", mode: 'copy', pattern: "${sample_id}_seq_qc.csv"
+
+    input:
+    tuple path(seq)
+
+    output:
+    tuple val(sample_id), path("${sample_id}_seq_qc.csv"), emit: seq_qc_csv
+
+    script:
+    sample_id = seq.getName().split('\\.')[0]
+    """
+    seq_qc.py -i ${seq} > ${sample_id}_seq_qc.csv
+    """
+}
+
 process blastn {
 
     tag { sample_id }

@@ -2,7 +2,8 @@
 
 nextflow.enable.dsl = 2
 
-include { blastn } from './modules/blast.nf'
+include { seq_qc }               from './modules/blast.nf'
+include { blastn }               from './modules/blast.nf'
 include { filter_best_bitscore } from './modules/blast.nf'
 
 workflow {
@@ -18,6 +19,7 @@ workflow {
   ch_seqs = ch_fasta.splitFasta(file: true)
 
   main:
+    seq_qc(ch_seqs)
     blastn(ch_seqs.combine(ch_db))
     filter_best_bitscore(blastn.out)
   
