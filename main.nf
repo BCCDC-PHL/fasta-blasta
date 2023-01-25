@@ -11,7 +11,7 @@ workflow {
   if (params.samplesheet_input != 'NO_FILE') {
     ch_fasta = Channel.fromPath(params.samplesheet_input).splitCsv(header: true).map{ it -> [it['ID'], it['FILE']] }
   } else {
-    ch_fasta = Channel.fromPath(params.assembly_search_path)
+    ch_fasta = Channel.fromPath(params.fasta_search_path)
   }
 
   ch_db = Channel.fromPath(params.db_dir).combine(Channel.of(params.db_name))
